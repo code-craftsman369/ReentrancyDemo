@@ -1,13 +1,83 @@
-# Sample Hardhat Project
+# ReentrancyDemo
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+Reentrancy攻撃と防御方法を学ぶための実践プロジェクト
 
-Try running some of the following tasks:
+## 📚 概要
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.js
+スマートコントラクトのセキュリティで最も重要なReentrancy攻撃について、実際にコードを動かして学習するためのデモプロジェクト。
+
+2016年のThe DAO事件（被害額60億円相当）の原因となった脆弱性を再現し、防御方法を実装。
+
+## 🎯 学習内容
+
+- ✅ Reentrancy攻撃の仕組み
+- ✅ 脆弱なコントラクトの実装
+- ✅ 攻撃コントラクトの実装
+- ✅ Checks-Effects-Interactionsパターン
+- ✅ OpenZeppelin ReentrancyGuardの使用
+
+## 🔥 実装内容
+
+### 1. VulnerableBank.sol
+脆弱な銀行コントラクト。Reentrancy攻撃を受ける。
+
+### 2. Attacker.sol
+攻撃者のコントラクト。receive()関数で再帰的に引き出しを実行。
+
+### 3. SecureBank.sol
+Checks-Effects-Interactionsパターンで防御。
+
+### 4. UltraSecureBank.sol
+OpenZeppelinのReentrancyGuardで完全防御。
+
+## 🧪 テスト結果
 ```
+攻撃成功の例（VulnerableBank）:
+- 初期状態: 銀行残高 10 ETH
+- 攻撃者の投資: 1 ETH
+- 攻撃後: 攻撃者が 11 ETH 盗む（11回の再帰呼び出し）
+- 銀行残高: 0 ETH
+```
+
+## 🛠️ 使用技術
+
+- Solidity ^0.8.0
+- Hardhat
+- OpenZeppelin Contracts
+- Ethers.js
+- Chai (テスト)
+
+## 🚀 実行方法
+```bash
+# 依存関係のインストール
+npm install
+
+# テスト実行
+npx hardhat test
+
+# 攻撃成功のテストのみ実行
+npx hardhat test --grep "攻撃が成功"
+```
+
+## 📖 学習の成果
+
+このプロジェクトを通じて、以下を習得：
+
+1. **攻撃の理解**: なぜReentrancy攻撃が発生するのか
+2. **防御の実装**: 2つの防御パターンの実装
+3. **ベストプラクティス**: OpenZeppelinライブラリの活用
+
+## 👤 作成者
+
+**Tatsu**  
+GitHub: [@code-craftsman369](https://github.com/code-craftsman369)  
+Twitter: [@web3_builder369](https://twitter.com/web3_builder369)
+
+## 📝 参考資料
+
+- [The DAO Hack (2016)](https://en.wikipedia.org/wiki/The_DAO_(organization))
+- [OpenZeppelin ReentrancyGuard](https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard)
+
+## ⚠️ 注意事項
+
+このプロジェクトは**教育目的**です。実際のメインネットで脆弱なコントラクトをデプロイしないでください。
